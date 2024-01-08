@@ -12,7 +12,10 @@
     "@clerk/nextjs": "^4.29.2",
     "@prisma/client": "^5.7.1",
     "@vercel/blob": "^0.16.1",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.0",
     "date-fns": "^3.1.0",
+    "lucide-react": "^0.307.0",
     "markdown-draft-js": "^2.4.0",
     "nanoid": "^5.0.4",
     "next": "14.0.4",
@@ -20,7 +23,9 @@
     "react": "^18",
     "react-dom": "^18",
     "react-draft-wysiwyg": "^1.15.0",
-    "react-markdown": "^9.0.1"
+    "react-markdown": "^9.0.1",
+    "tailwind-merge": "^2.2.0",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@types/markdown-draft-js": "^2.2.7",
