@@ -4,9 +4,25 @@ import Select from "@/components/ui/select";
 
 import prisma from "@/lib/prisma";
 import { jobTypes } from "@/lib/job-types";
+import { Button } from "./ui/button";
+import { jobFilterSchema } from "@/lib/validation";
+import { redirect } from "next/navigation";
 
 const filterJobs = async (formData: FormData) => {
   "use server";
+
+  const values = Object.fromEntries(formData.entries());
+
+  const { q, location, type, remote } = jobFilterSchema.parse(values);
+
+  const searchParams = new URLSearchParams({
+    ...(q && { q: q.trim() }),
+    ...(type && { type }),
+    ...(location && { location }),
+    ...(remote && { remote: "true" }),
+  });
+
+  redirect(`/?${searchParams.toString()}`);
 };
 
 const JobFilterSidebar = async () => {
@@ -23,7 +39,7 @@ const JobFilterSidebar = async () => {
     )) as string[];
 
   return (
-    <aside className="sticky top-0 h-fit rounded-lg border bg-background p-4 md:w-[260px]">
+    <aside className="sticky top-4 h-fit rounded-lg border bg-background p-4 md:w-[260px]">
       <form action={filterJobs}>
         <div className="space-y-4">
           <div className="flex flex-col gap-2">
@@ -54,6 +70,20 @@ const JobFilterSidebar = async () => {
               ))}
             </Select>
           </div>
+
+          <div className="flex items-center gap-2">
+            <input
+              id="remote"
+              name="remote"
+              type="checkbox"
+              className="scale-125 accent-black"
+            />
+            <Label htmlFor="remote">Remote jobs</Label>
+          </div>
+
+          <Button type="submit" className="w-full">
+            Filter jobs
+          </Button>
         </div>
       </form>
     </aside>
