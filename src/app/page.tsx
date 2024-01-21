@@ -1,7 +1,7 @@
 import JobFilterSidebar from "@/components/JobFilterSidebar";
 import JobResults from "@/components/JobResults";
 import H1 from "@/components/ui/h1";
-import { jobFilterValues } from "@/lib/validation";
+import { JobFilterValues } from "@/lib/validation";
 
 interface PageProps {
   searchParams: {
@@ -12,10 +12,24 @@ interface PageProps {
   };
 }
 
+function getTitle({ q, location, remote, type }: JobFilterValues) {
+  const titlePrefix = q
+    ? `${q} jobs`
+    : type
+      ? `${type} developer jobs`
+      : remote
+        ? "Remote Developer Jobs"
+        : "All Developer <Jobs>";
+
+  const titleSuffix = location ? ` in ${location}` : "";
+
+  return `${titlePrefix}${titleSuffix}`;
+}
+
 export default async function Home({
   searchParams: { q, location, remote, type },
 }: PageProps) {
-  const filterValues: jobFilterValues = {
+  const filterValues: JobFilterValues = {
     q,
     location,
     type,
@@ -25,15 +39,15 @@ export default async function Home({
   return (
     <main className="m-auto my-10 max-w-5xl space-y-10 px-3">
       <div className="space-y-5 text-center">
-        <H1>Developer Jobs</H1>
+        <H1>{getTitle(filterValues)}</H1>
 
         <p className="text-sm text-muted-foreground sm:text-lg">
           Find your dream job.
         </p>
       </div>
       <section className="flex flex-col gap-4 md:flex-row">
-        <JobFilterSidebar />
-        <JobResults />
+        <JobFilterSidebar defaultValues={filterValues} />
+        <JobResults filterValues={filterValues} />
       </section>
     </main>
   );
