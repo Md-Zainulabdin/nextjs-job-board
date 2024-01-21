@@ -2,6 +2,7 @@ import JobFilterSidebar from "@/components/JobFilterSidebar";
 import JobResults from "@/components/JobResults";
 import H1 from "@/components/ui/h1";
 import { JobFilterValues } from "@/lib/validation";
+import { Metadata } from "next";
 
 interface PageProps {
   searchParams: {
@@ -12,7 +13,7 @@ interface PageProps {
   };
 }
 
-function getTitle({ q, location, remote, type }: JobFilterValues) {
+export function getTitle({ q, location, remote, type }: JobFilterValues) {
   const titlePrefix = q
     ? `${q} jobs`
     : type
@@ -24,6 +25,19 @@ function getTitle({ q, location, remote, type }: JobFilterValues) {
   const titleSuffix = location ? ` in ${location}` : "";
 
   return `${titlePrefix}${titleSuffix}`;
+}
+
+export function generateMetadata({
+  searchParams: { q, type, location, remote },
+}: PageProps): Metadata {
+  return {
+    title: getTitle({
+      q,
+      location,
+      type,
+      remote: remote === "true",
+    }),
+  };
 }
 
 export default async function Home({
